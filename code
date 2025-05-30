@@ -1,0 +1,32 @@
+import cv2
+import numpy as np
+# Load the pre-saved image
+img_path = "D:\OpenCvapp\janu\left .jpg"
+img = cv2.imread(img_path)
+# Convert the image to grayscale
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# Load Haar cascade for eye detection
+eye_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')# Detect eyes in the grayscale image
+eyes = eye_cascade.detectMultiScale(gray)
+# Check if any eyes are detected
+if len(eyes) > 0:
+# Get the first detected eye (assuming there's only one eye in the image)
+(ex, ey, ew, eh) = eyes[0]
+# Calculate the center of the eye
+eye_center_x = ex + ew // 2
+eye_center_y = ey + eh // 2
+# Get the dimensions of the image
+height, width, _ = img.shape
+# Determine the direction based on the position of the eye within the image
+if eye_center_x < width // 3:
+direction = 'Left' elif eye_center_x > 2 * width // 3:
+DEPARTMENT OF ECE 49direction = 'Right' elif eye_center_y < height // 3:
+direction = 'Up' elif eye_center_y > 2 * height // 3:
+direction = 'Down' else:
+direction = 'Straight' print(f"Detected eye position: {direction}")
+else:
+print("No eyes detected in the image.")
+# Display the image with eye detection
+cv2.imshow('Eye Detection', img)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
